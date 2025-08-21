@@ -1,4 +1,3 @@
-/* Body and general layout */
 body {
     background: #0d1117;
     color: #c9d1d9;
@@ -8,7 +7,7 @@ body {
 }
 
 .converter-container {
-    max-width: 1100px; /* fits inputs in one row */
+    max-width: 1100px; 
     margin: 50px auto;
     padding: 25px;
     background: #161b22;
@@ -16,7 +15,6 @@ body {
     box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 
-/* Header */
 h1 {
     text-align: center;
     margin-bottom: 25px;
@@ -24,7 +22,6 @@ h1 {
     font-weight: 600;
 }
 
-/* Converter row layout */
 .converter-row {
     display: flex;
     align-items: center;
@@ -33,7 +30,6 @@ h1 {
     justify-content: center;
 }
 
-/* Amount + currency combined group */
 .amount-group {
     display: flex;
     align-items: center;
@@ -49,7 +45,6 @@ h1 {
     box-shadow: 0 0 10px rgba(58,141,255,0.4);
 }
 
-/* Amount + currency inputs */
 .amount-group input[type="number"],
 .amount-group input[list],
 .amount-group input[type="text"] {
@@ -64,12 +59,11 @@ h1 {
     border: 1px solid #2c2c2c;
 }
 
-/* Converted amount (readonly gets a subtle tint) */
 .amount-group input[type="text"][readonly] {
     background: #11151c; /* slightly lighter/different to hint it's readonly */
     color: #9ca3af;
 }
-/* Currency selector inside group */
+
 .amount-group .currency-select {
     background: #161b22;
     color: #c9d1d9;
@@ -80,7 +74,7 @@ h1 {
     outline: none;
 }
 
-/* Swap button */
+
 #swap-currencies {
     background: #3a8dff;
     color: white;
@@ -97,7 +91,6 @@ h1 {
     transform: translateY(-1px);
 }
 
-/* Result display */
 #result {
     font-size: 1.2em;
     text-align: center;
@@ -112,7 +105,6 @@ h1 {
     transform: translateY(0);
 }
 
-/* Last updated */
 #last-updated {
     text-align: center;
     font-size: 0.85em;
@@ -120,13 +112,12 @@ h1 {
     margin-top: 10px;
 }
 
-/* Datalist styling */
 datalist option {
     background: #161b22;
     color: #c9d1d9;
 }
 
-/* Responsive */
+
 @media (max-width: 600px) {
     .converter-row {
         flex-direction: column;
