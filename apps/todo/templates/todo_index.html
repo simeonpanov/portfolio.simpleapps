@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+
+    <link rel="stylesheet" href="{{ url_for('todo.static', filename='css/styles.css') }}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{{ url_for('todo.static', filename='js/main.js') }}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo App</h1>
+
+        <form id="add-form">
+            <input type="text" id="note" placeholder="Task note" required>
+            <input type="text" id="duedate" placeholder="Select due date & time" required>
+
+            <select id="priority" required>
+                <option value="">Priority</option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+
+            <select id="category" required>
+                <option value="">Category</option>
+                <option>Work</option>
+                <option>Personal</option>
+                <option>Urgent</option>
+            </select>
+
+            <button type="submit">Add Task</button>
+        </form>
+
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search tasks...">
+            <select id="sort">
+                <option value="">Sort By</option>
+                <option value="az">A-Z</option>
+                <option value="za">Z-A</option>
+                <option value="priority">Priority</option>
+                <option value="date">Date</option>
+            </select>
+        </div>
+
+        <div id="tasks" class="tasks">
+        </div>
+    </div>
+</body>
+</html>

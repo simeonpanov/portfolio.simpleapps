@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('pomodoro.static', filename='css/styles.css') }}">
+</head>
+<body>
+
+<section class="pomodoro-app">
+  <header>
+    <h1>🍅 Pomodoro Timer 🍅</h1>
+  </header>
+
+  <form id="pomodoroForm">
+    <label>Cycles: <input type="number" id="cycles" value="4"></label>
+    <label>Work (min): <input type="number" id="pomodoro_length" value="25"></label>
+    <label>Break (min): <input type="number" id="break_time" value="5"></label>
+    <label>Long Break (min): <input type="number" id="long_break" value="15"></label>
+  </form>
+
+  <div class="timer-display">
+    <div id="timerDisplay">00:00</div>
+    <div class="phase-indicator">Phase: <span id="currentPhase">Ready</span></div>
+    <div class="cycle-display">Cycle: <span id="currentCycle">0</span> / <span id="totalCycles">4</span></div>
+  </div>
+
+  <div class="timer-controls">
+    <button id="startPomodoro">Start</button>
+    <div class="small-controls">
+      <button id="pausePomodoro">Pause</button>
+      <button id="resetPomodoro">Reset</button>
+    </div>
+  </div>
+</section>
+
+<script src="{{ url_for('pomodoro.static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="{{ url_for('currency.static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <div class="converter-container">
+      <h1>Currency Converter</h1>
+
+      <div class="converter-row">
+        <div class="amount-group">
+          <input list="currencies" id="from-currency" placeholder="From Currency">
+          <input type="number" id="amount" placeholder="Amount">
+        </div>
+        
+      <datalist id="currencies">
+        <!-- Populated dynamically by JS -->
+      </datalist>
+
+        <button id="swap-currencies">⇄</button>
+
+        <div class="amount-group">
+          <input list="currencies" id="to-currency" placeholder="To Currency">
+          <input type="text" id="converted-amount" readonly placeholder="Converted">
+        </div>
+      </div>
+
+      <p id="result"></p>
+      <p id="last-updated"></p>
+    </div>
+
+    <script src="{{ url_for('currency.static', filename='js/currencies.js') }}"></script>
+    <script src="{{ url_for('currency.static', filename='js/main.js') }}"></script>
+  </body>
+</html>
