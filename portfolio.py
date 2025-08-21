@@ -11,7 +11,7 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY')
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
-    SESSION_COOKIE_SECURE=False  # set True in production with HTTPS
+    SESSION_COOKIE_SECURE=True 
 )
 
 @app.route('/')
@@ -23,4 +23,4 @@ app.register_blueprint(currency_bp, url_prefix='/currency')
 app.register_blueprint(pomodoro_bp, url_prefix='/pomodoro')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
