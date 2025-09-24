@@ -1,25 +1,20 @@
 const canvas = document.getElementById("background");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let width = window.innerWidth;
+let height = window.innerHeight;
 
-// handle resize
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
+canvas.width = width;
+canvas.height = height;
 
-// --- Particle system ---
 const particleCount = 120;
 const maxDistance = 120;
 let particles = [];
 
-// generate particles
 for (let i = 0; i < particleCount; i++) {
   particles.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
+    x: Math.random(),
+    y: Math.random(),
     vx: (Math.random() - 0.5) * 0.5,
     vy: (Math.random() - 0.5) * 0.5,
     radius: Math.random() * 2 + 1,
@@ -27,49 +22,51 @@ for (let i = 0; i < particleCount; i++) {
   });
 }
 
-// detect current theme
 function getParticleColor(alpha = 1) {
-  const isDark = document.documentElement.classList.contains("dark");
-  return isDark ? `rgba(255,255,255,${alpha})` : `rgba(0,0,0,${alpha})`;
+  return document.documentElement.classList.contains("dark")
+    ? `rgba(255,255,255,${alpha})`
+    : `rgba(0,0,0,${alpha})`;
 }
 
-// listen for theme changes
+function resizeCanvas() {
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+}
+
+window.addEventListener("resize", resizeCanvas);
+
 document.getElementById("theme-toggle").addEventListener("click", () => {
-  setTimeout(() => {
-    // rerender after theme toggle (slight delay to let class change)
-  }, 50);
+  setTimeout(() => {}, 50);
 });
 
-// --- animation loop ---
 function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, width, height);
 
-  // draw particles
   particles.forEach((p) => {
-    p.x += p.vx;
-    p.y += p.vy;
+    p.x += p.vx / width;
+    p.y += p.vy / height;
 
-    // bounce off edges
-    if (p.x <= 0 || p.x >= canvas.width) p.vx *= -1;
-    if (p.y <= 0 || p.y >= canvas.height) p.vy *= -1;
+    if (p.x <= 0 || p.x >= 1) p.vx *= -1;
+    if (p.y <= 0 || p.y >= 1) p.vy *= -1;
 
     ctx.beginPath();
-    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.arc(p.x * width, p.y * height, p.radius, 0, Math.PI * 2);
     ctx.fillStyle = getParticleColor(p.alpha);
     ctx.fill();
   });
 
-  // draw connecting lines
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
       let dx = particles[i].x - particles[j].x;
       let dy = particles[i].y - particles[j].y;
-      let dist = Math.sqrt(dx * dx + dy * dy);
+      let dist = Math.sqrt(dx * dx + dy * dy) * Math.max(width, height);
 
       if (dist < maxDistance) {
         ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.moveTo(particles[i].x * width, particles[i].y * height);
+        ctx.lineTo(particles[j].x * width, particles[j].y * height);
         ctx.strokeStyle = getParticleColor(1 - dist / maxDistance);
         ctx.lineWidth = 0.5;
         ctx.stroke();
