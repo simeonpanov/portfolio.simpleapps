@@ -1,0 +1,126 @@
+/* Reset & body */
+body {
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    background: #0d1117;
+    color: #c9d1d9;
+}
+
+/* Container */
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+/* Header */
+header h1 {
+    text-align: center;
+    color: #3a8dff;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+/* Dashboard layout */
+.dashboard {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Card style */
+.card {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    flex: 1 1 300px;
+}
+
+/* Full width card */
+.card.full-width {
+    flex: 1 1 100%;
+}
+
+/* Card headings */
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #3a8dff;
+    text-align: center;
+}
+
+/* Form styling inside cards */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+form input,
+form select {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #2c2c2c;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+form input:focus,
+form select:focus {
+    border-color: #3a8dff;
+    box-shadow: 0 0 10px rgba(58, 141, 255, 0.4);
+}
+
+form button {
+    padding: 12px;
+    background: #3a8dff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+form button:hover {
+    background: #2a6fd6;
+    transform: translateY(-2px);
+}
+
+/* Table styling */
+#expenses-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#expenses-table th,
+#expenses-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+#expenses-table th {
+    background: #161b22;
+    color: #3a8dff;
+    font-weight: 600;
+}
+
+#expenses-table tr:nth-child(even) {
+    background: #11151c;
+}
+
+#expenses-table tr:hover {
+    background: #1f2430;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .dashboard {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Expense Tracker</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/tailwind.css') }}"
+        />
+
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='images/favicon.ico') }}"
+            type="image/x-icon"
+        />
+        <script
+            src="https://kit.fontawesome.com/your-fa-key.js"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body class="bg-gray-900 text-gray-200 font-inter">
+        <div class="max-w-6xl mx-auto px-4 py-10">
+            <header class="mb-10 text-center">
+                <h1 class="text-4xl font-bold text-blue-500">
+                    Expense Tracker
+                </h1>
+            </header>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-10">
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h2
+                        class="text-xl font-semibold text-blue-400 mb-4 text-center"
+                    >
+                        Add Expense
+                    </h2>
+                    <form id="expense-form" class="flex flex-col gap-3">
+                        <input
+                            type="text"
+                            id="item"
+                            placeholder="Item"
+                            required
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <input
+                            type="number"
+                            id="amount"
+                            placeholder="Amount"
+                            step="0.01"
+                            min="0"
+                            required
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <input
+                            type="text"
+                            id="category"
+                            placeholder="Category"
+                            required
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <input
+                            type="date"
+                            id="date"
+                            required
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <button
+                            type="submit"
+                            class="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 mt-2 font-medium transition"
+                        >
+                            Add Expense
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                    <h2
+                        class="text-xl font-semibold text-blue-400 mb-4 text-center"
+                    >
+                        Filter & Sort
+                    </h2>
+                    <form id="filter-form" class="flex flex-col gap-3">
+                        <input
+                            type="text"
+                            id="filter-category"
+                            placeholder="Category"
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <input
+                            type="date"
+                            id="start-date"
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <input
+                            type="date"
+                            id="end-date"
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <input
+                            type="number"
+                            id="min-amount"
+                            placeholder="Min Amount"
+                            step="0.01"
+                            min="0"
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <input
+                            type="number"
+                            id="max-amount"
+                            placeholder="Max Amount"
+                            step="0.01"
+                            min="0"
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        />
+                        <select
+                            id="sort"
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        >
+                            <option value="">Sort By</option>
+                            <option value="date">Date</option>
+                            <option value="amount">Amount</option>
+                            <option value="category">Category</option>
+                        </select>
+                        <select
+                            id="order"
+                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                        >
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                        <button
+                            type="submit"
+                            class="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 mt-2 font-medium transition"
+                        >
+                            Apply
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                <h2
+                    class="text-xl font-semibold text-blue-400 mb-4 text-center"
+                >
+                    Expenses
+                </h2>
+                <div class="overflow-x-auto">
+                    <table
+                        class="w-full text-left text-sm border-collapse"
+                        id="expenses-table"
+                    >
+                        <thead class="bg-gray-700 text-blue-400">
+                            <tr>
+                                <th class="px-4 py-2">ID</th>
+                                <th class="px-4 py-2">Item</th>
+                                <th class="px-4 py-2">Amount</th>
+                                <th class="px-4 py-2">Category</th>
+                                <th class="px-4 py-2">Date</th>
+                                <th class="px-4 py-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ url_for('expensetracker.static', filename='js/main.js') }}"></script>
+    </body>
+</html>

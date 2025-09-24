@@ -1,77 +1,928 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Simeon Portfolio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html>
+<html lang="en" class="transition-colors duration-500">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Simeon Panov - Portfolio</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: #0d1117;
-            color: #c9d1d9;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 40px;
-            text-align: center;
-        }
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/tailwind.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='images/favicon.ico') }}"
+            type="image/x-icon"
+        />
 
-        h1 {
-            color: #3a8dff;
-            margin-bottom: 30px;
-        }
+        <script>
+            (function () {
+                const html = document.documentElement;
+                const savedTheme = localStorage.getItem("theme");
 
-        ul {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 0;
-            list-style: none;
-        }
+                if (savedTheme === "dark") {
+                    html.classList.add("dark");
+                } else {
+                    html.classList.remove("dark");
+                }
+            })();
+        </script>
+    </head>
+    <body
+        class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-500"
+    >
+        <canvas id="background" class="fixed top-0 left-0 z-[-1]"></canvas>
 
-        li {
-            flex: 1 1 250px; 
-        }
+        <nav
+            class="fixed top-0 left-0 w-full z-10 flex items-center justify-between px-6 py-3 bg-white/30 dark:bg-gray-900/30 backdrop-blur-md shadow-sm"
+        >
+            <div class="flex gap-6">
+                <a
+                    href="#about"
+                    class="text-lg font-medium hover:text-blue-500 transition"
+                    >About Me</a
+                >
+                <a
+                    href="#skills"
+                    class="text-lg font-medium hover:text-blue-500 transition"
+                    >Skills</a
+                >
+                <a
+                    href="#projects"
+                    class="text-lg font-medium hover:text-blue-500 transition"
+                    >Projects</a
+                >
+            </div>
 
-        a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 20px;
-            background: #161b22;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 18px;
-            color: #3a8dff;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
+            <div class="flex gap-2">
+                <a
+                    href="https://github.com/simeonpanov"
+                    target="_blank"
+                    class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 shadow-lg transition"
+                >
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a
+                    href="https://www.linkedin.com/in/simeon-panov-477b79248/"
+                    target="_blank"
+                    class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 shadow-lg transition"
+                >
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                <a
+                    href="#contact"
+                    class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 shadow-lg transition"
+                >
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <button
+                    id="theme-toggle"
+                    class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition shadow-lg"
+                >
+                    <i
+                        id="theme-icon"
+                        class="fa-solid fa-sun text-yellow-400"
+                    ></i>
+                </button>
+            </div>
+        </nav>
 
-        a:hover {
-            background: #2a6fd6;
-            transform: translateY(-3px);
-            color: #fff;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
+        <section
+            class="min-h-screen flex flex-col justify-center items-center text-center px-4"
+        >
+            <h1
+                class="text-6xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 mb-4 animate-text-gradient dark:from-blue-400 dark:via-purple-400 dark:to-pink-400"
+            >
+                Simeon Panov
+            </h1>
 
-        a i {
-            font-size: 20px;
-            transition: transform 0.2s;
-        }
+            <h2
+                class="text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-gray-200 mb-3 opacity-0 animate-fade-in delay-150"
+            >
+                Software Engineer
+            </h2>
 
-        a:hover i {
-            transform: scale(1.2);
-        }
-    </style>
-</head>
-<body>
-    <h1>My Mini Apps Portfolio</h1>
-    <ul>
-        <li><a href="/todo/" target="_blank"><i class="fa-solid fa-list-check"></i> Todo App</a></li>
-        <li><a href="/currency/" target="_blank"><i class="fa-solid fa-dollar-sign"></i> Currency Converter</a></li>
-        <li><a href="/pomodoro/" target="_blank"><i class="fa-solid fa-stopwatch"></i> Pomodoro Timer</a></li>
-    </ul>
-</body>
+            <p
+                class="text-lg sm:text-xl text-gray-700 dark:text-gray-300 max-w-xl leading-relaxed opacity-0 animate-fade-in delay-300"
+            >
+                From concept to code - crafting elegant and reliable digital
+                solutions
+            </p>
+
+            <style>
+                @keyframes fade-in {
+                    from {
+                        opacity: 0;
+                        transform: translateY(10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                .animate-fade-in {
+                    animation: fade-in 1s ease forwards;
+                }
+                .delay-150 {
+                    animation-delay: 0.15s;
+                }
+                .delay-300 {
+                    animation-delay: 0.3s;
+                }
+            </style>
+
+            <div class="absolute bottom-6 flex justify-center w-full">
+                <a href="#about" aria-label="Scroll down">
+                    <i
+                        class="fa-solid fa-angle-down text-3xl animate-bounce text-gray-600 dark:text-gray-300"
+                    ></i>
+                </a>
+            </div>
+        </section>
+
+        <section
+            id="about"
+            class="py-20 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md"
+        >
+            <div class="max-w-4xl mx-auto px-6 text-center">
+                <img
+                    src="static/images/simeonpanov.jpg"
+                    alt="Portrait of Simeon Panov"
+                    class="w-32 h-32 mx-auto rounded-full shadow-lg mb-6"
+                />
+                <h2 class="text-4xl font-bold mb-4">About Me</h2>
+                <p class="text-lg leading-relaxed mb-6">
+                    I’m a QA Analyst with experience in manual and automated
+                    testing, currently transitioning into software development.
+                    I’m building full-stack applications to grow my development
+                    skills and contribute to creating reliable, user-friendly
+                    software.
+                </p>
+                <a
+                    href="/static/images/Simeon_Panov.pdf"
+                    target="_blank"
+                    class="inline-block px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg shadow-md transition"
+                >
+                    Download CV
+                </a>
+            </div>
+        </section>
+
+        <section id="approach" class="py-20 bg-gray-100 dark:bg-gray-900">
+            <div class="max-w-6xl mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-12">My Approach</h2>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+                >
+                    <div
+                        class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg"
+                    >
+                        <i
+                            class="fa-solid fa-cogs text-3xl text-blue-500 mb-4 fa-spin"
+                            style="--fa-animation-duration: 6s"
+                        ></i>
+                        <h3 class="text-xl font-semibold mb-2">
+                            Custom Solutions
+                        </h3>
+                        <p>
+                            Designing features tailored to each project’s unique
+                            requirements.
+                        </p>
+                    </div>
+
+                    <div
+                        class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg"
+                    >
+                        <i
+                            class="fa-solid fa-check-double text-3xl text-yellow-500 mb-4 fa-beat"
+                        ></i>
+                        <h3 class="text-xl font-semibold mb-2">
+                            Quality-Focused
+                        </h3>
+                        <p>
+                            Ensuring reliability through thorough testing and
+                            validation.
+                        </p>
+                    </div>
+
+                    <div
+                        class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg"
+                    >
+                        <i
+                            class="fa-solid fa-rocket text-3xl text-green-500 mb-4 rocket-float"
+                        ></i>
+                        <h3 class="text-xl font-semibold mb-2">
+                            Fast & Responsive
+                        </h3>
+                        <p>
+                            Optimizing performance for smooth and efficient user
+                            experiences.
+                        </p>
+                    </div>
+
+                    <div
+                        class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg"
+                    >
+                        <i
+                            class="fa-solid fa-object-group text-3xl text-red-500 mb-4 fa-beat"
+                        ></i>
+                        <h3 class="text-xl font-semibold mb-2">
+                            Intuitive & Clear
+                        </h3>
+                        <p>
+                            Crafting applications that are easy to navigate and
+                            enjoyable to use.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <style>
+            .rocket-float {
+                animation: float 2s ease-in-out infinite;
+            }
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+        </style>
+
+        <section id="skills" class="py-20 bg-gray-100 dark:bg-gray-800">
+            <div class="max-w-6xl mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-8" id="skills-title">
+                    Front-End
+                </h2>
+
+                <div class="relative">
+                    <button
+                        id="prev-skill"
+                        class="absolute -left-20 top-1/2 transform -translate-y-1/2 bg-gray-200 dark:bg-gray-700 p-3 rounded-full shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+                    >
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+
+                    <button
+                        id="next-skill"
+                        class="absolute -right-20 top-1/2 transform -translate-y-1/2 bg-gray-200 dark:bg-gray-700 p-3 rounded-full shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+                    >
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <div id="skills-panels">
+                        <div class="skill-panel">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-html5 text-5xl text-orange-500 mb-2 dark:text-orange-400"
+                                    ></i>
+                                    <span>HTML</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        The foundation every web page is built
+                                        on.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-css3-alt text-5xl text-blue-500 mb-2 dark:text-blue-400"
+                                    ></i>
+                                    <span>CSS</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Turning raw structure into clean, styled
+                                        layouts.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-js text-5xl text-yellow-400 mb-2 dark:text-yellow-300"
+                                    ></i>
+                                    <span>JavaScript</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Bringing interactivity and logic to the
+                                        browser.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-react text-5xl text-blue-400 mb-2 dark:text-blue-300"
+                                    ></i>
+                                    <span>React</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        A reliable way to build modern,
+                                        component-driven UIs.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-css3-alt text-5xl text-teal-500 mb-2 dark:text-teal-400"
+                                    ></i>
+                                    <span>TailwindCSS</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Fast, consistent styling without the
+                                        overhead.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skill-panel hidden">
+                            <div class="grid grid-cols-2 sm:grid-cols-2 gap-6">
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-python text-5xl text-green-500 mb-2 dark:text-green-400"
+                                    ></i>
+                                    <span>Python</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Readable, versatile, and effective for
+                                        rapid development.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-solid fa-vial text-5xl text-indigo-500 mb-2 dark:text-indigo-400"
+                                    ></i>
+                                    <span>Flask</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Lightweight and flexible for API and web
+                                        services.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-solid fa-database text-5xl text-purple-500 mb-2 dark:text-purple-400"
+                                    ></i>
+                                    <span>SQLite</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        A compact database that just works for
+                                        smaller projects.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skill-panel hidden">
+                            <div class="grid grid-cols-2 sm:grid-cols-2 gap-6">
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-solid fa-shield-halved text-5xl text-red-500 mb-2 dark:text-red-400"
+                                    ></i>
+                                    <span>OWASP ZAP</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Focused on uncovering security
+                                        vulnerabilities early.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-solid fa-play text-5xl text-green-500 mb-2 dark:text-green-400"
+                                    ></i>
+                                    <span>Playwright</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Efficient, modern testing across
+                                        multiple browsers.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-solid fa-mobile-screen-button text-5xl text-blue-500 mb-2 dark:text-blue-400"
+                                    ></i>
+                                    <span>Appium</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Automated mobile testing across
+                                        platforms.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-solid fa-bolt text-5xl text-yellow-500 mb-2 dark:text-yellow-400"
+                                    ></i>
+                                    <span>k6</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Reliable load testing for performance
+                                        under pressure.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skill-panel hidden">
+                            <div class="grid grid-cols-2 sm:grid-cols-2 gap-6">
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-git-alt text-5xl text-orange-500 mb-2 dark:text-orange-400"
+                                    ></i>
+                                    <span>Git</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Keeping code versions organized and
+                                        collaborative.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-github text-5xl text-gray-600 mb-2 dark:text-gray-400"
+                                    ></i>
+                                    <span>GitHub Actions</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Streamlining CI/CD with automated
+                                        workflows.
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="skill-card group relative bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                    <i
+                                        class="fa-brands fa-jenkins text-5xl text-red-500 mb-2 dark:text-red-400"
+                                    ></i>
+                                    <span>Jenkins</span>
+                                    <div
+                                        class="tooltip absolute bottom-full left-1/2 mb-2 transform -translate-x-1/2 px-3 py-1 rounded-lg bg-black text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                                    >
+                                        Trusted automation for complex
+                                        pipelines.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .skill-card {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding: 1.5rem;
+                    border-radius: 1rem;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    transition:
+                        transform 0.3s,
+                        box-shadow 0.3s;
+                    cursor: default;
+                }
+
+                .skill-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+                }
+
+                .tooltip {
+                    pointer-events: none;
+                }
+            </style>
+
+            <script>
+                const panels = document.querySelectorAll(".skill-panel");
+                const titles = [
+                    "Front-End",
+                    "Back-End",
+                    "QA & Testing",
+                    "CI/CD & Version Control",
+                ];
+                let currentIndex = 0;
+                const titleEl = document.getElementById("skills-title");
+
+                function showPanel(index) {
+                    panels.forEach((p, i) =>
+                        p.classList.toggle("hidden", i !== index),
+                    );
+                    titleEl.textContent = titles[index];
+                }
+
+                document
+                    .getElementById("prev-skill")
+                    .addEventListener("click", () => {
+                        currentIndex =
+                            (currentIndex - 1 + panels.length) % panels.length;
+                        showPanel(currentIndex);
+                    });
+
+                document
+                    .getElementById("next-skill")
+                    .addEventListener("click", () => {
+                        currentIndex = (currentIndex + 1) % panels.length;
+                        showPanel(currentIndex);
+                    });
+
+                showPanel(currentIndex);
+            </script>
+        </section>
+
+        <section
+            id="projects"
+            class="min-h-screen flex flex-col items-center px-6 py-20"
+        >
+            <h2 class="text-4xl font-bold mb-12 text-center">Projects</h2>
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl"
+            >
+                <div
+                    class="bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col"
+                >
+                    <i
+                        class="fa-solid fa-list-check text-4xl text-blue-500 dark:text-blue-400 mb-4"
+                    ></i>
+                    <h3 class="text-xl font-semibold mb-2">Todo App</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Manage daily tasks with add/edit/delete features.
+                    </p>
+                    <div class="mt-auto flex gap-3">
+                        <a
+                            href="/todo/"
+                            target="_blank"
+                            class="flex-1 text-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+                            >Demo</a
+                        >
+                        <a
+                            href="https://github.com/simeonpanov/todo"
+                            target="_blank"
+                            class="flex-1 text-center px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600"
+                            >Source</a
+                        >
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col"
+                >
+                    <i
+                        class="fa-solid fa-dollar-sign text-4xl text-green-500 dark:text-green-400 mb-4"
+                    ></i>
+                    <h3 class="text-xl font-semibold mb-2">
+                        Currency Converter
+                    </h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Convert between currencies with real-time exchange
+                        rates.
+                    </p>
+                    <div class="mt-auto flex gap-3">
+                        <a
+                            href="/currency/"
+                            target="_blank"
+                            class="flex-1 text-center px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600"
+                            >Demo</a
+                        >
+                        <a
+                            href="https://github.com/simeonpanov/currency"
+                            target="_blank"
+                            class="flex-1 text-center px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600"
+                            >Source</a
+                        >
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col"
+                >
+                    <i
+                        class="fa-solid fa-stopwatch text-4xl text-red-500 dark:text-red-400 mb-4"
+                    ></i>
+                    <h3 class="text-xl font-semibold mb-2">Pomodoro Timer</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Boost productivity with customizable focus sessions.
+                    </p>
+                    <div class="mt-auto flex gap-3">
+                        <a
+                            href="/pomodoro/"
+                            target="_blank"
+                            class="flex-1 text-center px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+                            >Demo</a
+                        >
+                        <a
+                            href="https://github.com/simeonpanov/pomodoro"
+                            target="_blank"
+                            class="flex-1 text-center px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600"
+                            >Source</a
+                        >
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col"
+                >
+                    <i
+                        class="fa-solid fa-wallet text-4xl text-yellow-500 dark:text-yellow-400 mb-4"
+                    ></i>
+                    <h3 class="text-xl font-semibold mb-2">Expense Tracker</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        Track spending and manage your personal budget.
+                    </p>
+                    <div class="mt-auto flex gap-3">
+                        <a
+                            href="/expenses/"
+                            target="_blank"
+                            class="flex-1 text-center px-4 py-2 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600"
+                            >Demo</a
+                        >
+                        <a
+                            href="https://github.com/simeonpanov/expenses"
+                            target="_blank"
+                            class="flex-1 text-center px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600"
+                            >Source</a
+                        >
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col"
+                >
+                    <i
+                        class="fa-solid fa-shield-halved text-4xl text-red-500 dark:text-red-400 mb-4"
+                    ></i>
+                    <h3 class="text-xl font-semibold mb-2">
+                        Quality Gatekeeper
+                    </h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">
+                        A full-stack QA automation framework for functional UI,
+                        API, performance, and security testing. Integrates with
+                        CI/CD pipelines and Dockerized Selenium Grid.
+                    </p>
+                    <div class="mt-auto">
+                        <a
+                            href="https://github.com/simeonpanov/quality-gatekeeper"
+                            target="_blank"
+                            class="w-full text-center px-4 py-2 rounded-lg bg-gray-700 text-white hover:bg-gray-600 transition"
+                        >
+                            See on GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16 w-full max-w-3xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-8">Contact Me</h2>
+
+            <form
+                action="https://formspree.io/f/xeorjdly"
+                method="POST"
+                class="bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col gap-4"
+                novalidate
+            >
+                <div class="relative">
+                    <label for="name" class="block mb-1 font-medium"
+                        >Name</label
+                    >
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        required
+                        class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                    <span
+                        class="text-red-500 text-sm absolute left-0 bottom-[-1.25rem] opacity-0 transition-opacity"
+                        id="name-error"
+                        >Please enter your name.</span
+                    >
+                </div>
+
+                <div class="relative">
+                    <label for="email" class="block mb-1 font-medium"
+                        >Email</label
+                    >
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        required
+                        class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                    <span
+                        class="text-red-500 text-sm absolute left-0 bottom-[-1.25rem] opacity-0 transition-opacity"
+                        id="email-error"
+                        >Please enter a valid email address.</span
+                    >
+                </div>
+
+                <div class="relative">
+                    <label for="message" class="block mb-1 font-medium"
+                        >Message</label
+                    >
+                    <textarea
+                        name="message"
+                        id="message"
+                        rows="5"
+                        required
+                        class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                    ></textarea>
+                    <span
+                        class="text-red-500 text-sm absolute left-0 bottom-[-1.25rem] opacity-0 transition-opacity"
+                        id="message-error"
+                        >Please enter your message.</span
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-500 transition"
+                >
+                    Send Message
+                </button>
+
+                <p
+                    id="success-message"
+                    class="text-green-500 mt-4 font-medium opacity-0 transition-opacity"
+                >
+                    Thank you! I’ll get back to you soon.
+                </p>
+            </form>
+        </section>
+
+        <script>
+            const contactForm = document.querySelector("#contact form");
+            const successMessage = document.getElementById("success-message");
+
+            const fields = [
+                {
+                    input: document.getElementById("name"),
+                    error: document.getElementById("name-error"),
+                },
+                {
+                    input: document.getElementById("email"),
+                    error: document.getElementById("email-error"),
+                },
+                {
+                    input: document.getElementById("message"),
+                    error: document.getElementById("message-error"),
+                },
+            ];
+
+            fields.forEach(({ input, error }) => {
+                input.addEventListener("input", () => {
+                    error.style.opacity = 0;
+                });
+            });
+
+            contactForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                let valid = true;
+
+                fields.forEach(({ input, error }) => {
+                    if (!input.value.trim()) {
+                        error.textContent = `Please enter your ${input.name}.`;
+                        error.style.opacity = 1;
+                        valid = false;
+                    } else if (
+                        input.type === "email" &&
+                        !input.value.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+                    ) {
+                        error.textContent =
+                            "Please enter a valid email address.";
+                        error.style.opacity = 1;
+                        valid = false;
+                    }
+                });
+
+                if (!valid) return;
+
+                const formData = new FormData(contactForm);
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: "POST",
+                        body: formData,
+                        headers: { Accept: "application/json" },
+                    });
+
+                    if (response.ok) {
+                        successMessage.style.opacity = 1;
+                        contactForm.reset();
+                    } else {
+                        alert("Oops! There was a problem submitting the form.");
+                    }
+                } catch (err) {
+                    alert(
+                        "Oops! Something went wrong. Please try again later.",
+                    );
+                }
+            });
+        </script>
+
+        <style>
+            @keyframes text-gradient {
+                0%,
+                100% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+            }
+            .animate-text-gradient {
+                background-size: 200% 200%;
+                animation: text-gradient 5s ease infinite;
+            }
+        </style>
+
+        <script>
+            const toggleButton = document.getElementById("theme-toggle");
+            const themeIcon = document.getElementById("theme-icon");
+            const html = document.documentElement;
+
+            if (localStorage.getItem("theme") === "dark") {
+                html.classList.add("dark");
+                themeIcon.classList.remove("fa-sun");
+                themeIcon.classList.add("fa-moon");
+            } else {
+                html.classList.remove("dark");
+                themeIcon.classList.remove("fa-moon");
+                themeIcon.classList.add("fa-sun");
+            }
+
+            toggleButton.addEventListener("click", () => {
+                html.classList.toggle("dark");
+                if (html.classList.contains("dark")) {
+                    localStorage.setItem("theme", "dark");
+                    themeIcon.classList.remove("fa-sun");
+                    themeIcon.classList.add("fa-moon");
+                } else {
+                    localStorage.setItem("theme", "light");
+                    themeIcon.classList.remove("fa-moon");
+                    themeIcon.classList.add("fa-sun");
+                }
+            });
+        </script>
+
+        <script
+            src="{{ url_for('static', filename='js/particles.js') }}"
+            defer
+        ></script>
+    </body>
 </html>

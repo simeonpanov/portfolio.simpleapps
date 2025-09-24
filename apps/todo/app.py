@@ -57,7 +57,6 @@ def api_add():
     if not note or not duedate_raw or priority not in PRIORITY_ORDER or category not in CATEGORIES:
         return jsonify({'status': 'error', 'message': 'Invalid input'}), 400
 
-    # --- Parse date from DD-MM-YYYY HH:MM or YYYY-MM-DD HH:MM ---
     for fmt in ("%d-%m-%Y %H:%M", "%Y-%m-%d %H:%M", "%d-%m-%Y", "%Y-%m-%d"):
         try:
             duedate_dt = datetime.strptime(duedate_raw, fmt)
@@ -67,7 +66,6 @@ def api_add():
     else:
         return jsonify({'status': 'error', 'message': 'Invalid date'}), 400
 
-    # Store date in consistent YYYY-MM-DD HH:MM format
     duedate = duedate_dt.strftime("%Y-%m-%d %H:%M")
 
     tasks = get_tasks()
@@ -79,7 +77,7 @@ def api_add():
         'priority': priority,
         'category': category
     })
-    session['tasks'] = tasks  # update session
+    session['tasks'] = tasks
 
     return jsonify({'status': 'success'})
 
@@ -101,7 +99,7 @@ def api_update(task_id):
     for task in tasks:
         if task['id'] == task_id:
             task['description'] = new_description
-            session['tasks'] = tasks  # save back to session
+            session['tasks'] = tasks
             return jsonify({'status': 'success'})
-    
+
     return jsonify({'status': 'error', 'message': 'Task not found'}), 404

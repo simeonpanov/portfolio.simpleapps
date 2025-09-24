@@ -1,55 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Todo App</title>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Todo App</title>
 
-    <link rel="stylesheet" href="{{ url_for('todo.static', filename='css/styles.css') }}">
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/tailwind.css') }}"
+        />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css"
+        />
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="{{ url_for('todo.static', filename='js/main.js') }}" defer></script>
-</head>
-<body>
-    <div class="container">
-        <h1>Todo App</h1>
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='images/favicon.ico') }}"
+            type="image/x-icon"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        <form id="add-form">
-            <input type="text" id="note" placeholder="Task note" required>
-            <input type="text" id="duedate" placeholder="Select due date & time" required>
+        <script
+            src="{{ url_for('todo.static', filename='js/main.js') }}"
+            defer
+        ></script>
 
-            <select id="priority" required>
-                <option value="">Priority</option>
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-            </select>
+        <script>
+            (function () {
+                const html = document.documentElement;
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    html.classList.add("dark");
+                } else {
+                    html.classList.remove("dark");
+                }
+            })();
+        </script>
+    </head>
+    <body
+        class="bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center p-4 transition-colors duration-500"
+    >
+        <div
+            class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-3xl space-y-6"
+        >
+            <h1
+                class="text-3xl sm:text-4xl font-bold text-center text-blue-600 dark:text-blue-400 mb-4"
+            >
+                ✅ Todo App
+            </h1>
 
-            <select id="category" required>
-                <option value="">Category</option>
-                <option>Work</option>
-                <option>Personal</option>
-                <option>Urgent</option>
-            </select>
+            <form id="add-form" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input
+                    type="text"
+                    id="note"
+                    placeholder="Task note"
+                    required
+                    class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+                <input
+                    type="text"
+                    id="duedate"
+                    placeholder="Select due date & time"
+                    required
+                    class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+                <select
+                    id="priority"
+                    required
+                    class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                >
+                    <option value="">Priority</option>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                </select>
+                <select
+                    id="category"
+                    required
+                    class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                >
+                    <option value="">Category</option>
+                    <option>Work</option>
+                    <option>Personal</option>
+                    <option>Urgent</option>
+                </select>
 
-            <button type="submit">Add Task</button>
-        </form>
+                <div class="sm:col-span-2">
+                    <button
+                        type="submit"
+                        class="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-md transition"
+                    >
+                        Add Task
+                    </button>
+                </div>
+            </form>
 
-        <div class="controls">
-            <input type="text" id="search" placeholder="Search tasks...">
-            <select id="sort">
-                <option value="">Sort By</option>
-                <option value="az">A-Z</option>
-                <option value="za">Z-A</option>
-                <option value="priority">Priority</option>
-                <option value="date">Date</option>
-            </select>
+            <div
+                class="flex flex-col sm:flex-row gap-4 items-center justify-between"
+            >
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search tasks..."
+                    class="flex-1 p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+                <select
+                    id="sort"
+                    class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                >
+                    <option value="">Sort By</option>
+                    <option value="az">A-Z</option>
+                    <option value="za">Z-A</option>
+                    <option value="priority">Priority</option>
+                    <option value="date">Date</option>
+                </select>
+            </div>
+
+            <div id="tasks" class="space-y-4">
+                <!-- Tasks will be dynamically rendered here by JS -->
+            </div>
         </div>
-
-        <div id="tasks" class="tasks">
-        </div>
-    </div>
-</body>
+    </body>
 </html>

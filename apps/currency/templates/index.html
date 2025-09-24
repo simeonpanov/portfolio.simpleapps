@@ -1,37 +1,101 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Currency Converter</title>
-    <link rel="stylesheet" href="{{ url_for('currency.static', filename='css/styles.css') }}">
-  </head>
-  <body>
-    <div class="converter-container">
-      <h1>Currency Converter</h1>
+<!doctype html>
+<html lang="en" class="transition-colors duration-500">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Currency Converter</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/tailwind.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
 
-      <div class="converter-row">
-        <div class="amount-group">
-          <input list="currencies" id="from-currency" placeholder="From Currency">
-          <input type="number" id="amount" placeholder="Amount">
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='images/favicon.ico') }}"
+            type="image/x-icon"
+        />
+        <script>
+            (function () {
+                const html = document.documentElement;
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    html.classList.add("dark");
+                } else {
+                    html.classList.remove("dark");
+                }
+            })();
+        </script>
+    </head>
+    <body
+        class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen p-4 transition-colors duration-500"
+    >
+        <div
+            class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-6xl space-y-6 transition-colors duration-500"
+        >
+            <h1
+                class="text-3xl sm:text-4xl font-bold text-center text-blue-600 dark:text-blue-400 mb-4"
+            >
+                Currency Converter
+            </h1>
+
+            <!-- Horizontal Converter -->
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <!-- From -->
+                <div class="flex-1 flex gap-2 items-center">
+                    <input
+                        type="number"
+                        id="amount"
+                        placeholder="Amount"
+                        class="text-gray-900 dark:text-gray-100 flex-1 p-3 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
+                    />
+                    <input
+                        list="currencies"
+                        id="from-currency"
+                        class="text-gray-900 dark:text-gray-100 p-3 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
+                        placeholder="USD – United States Dollar"
+                    />
+                </div>
+
+                <!-- Swap -->
+                <button
+                    id="swap-currencies"
+                    class="p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition shadow-md"
+                >
+                    <i class="fa-solid fa-arrows-rotate text-lg"></i>
+                </button>
+
+                <!-- To -->
+                <div class="flex-1 flex gap-2 items-center">
+                    <input
+                        type="text"
+                        id="converted-amount"
+                        readonly
+                        placeholder="Converted"
+                        class="text-gray-900 dark:text-gray-100 flex-1 p-3 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
+                    />
+                    <input
+                        list="currencies"
+                        id="to-currency"
+                        class="text-gray-900 dark:text-gray-100 p-3 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
+                        placeholder="EUR – Euro"
+                    />
+                </div>
+            </div>
+
+            <p id="result" class="hidden"></p>
+
+            <p
+                id="last-updated"
+                class="text-center text-gray-500 dark:text-gray-400 text-sm"
+            ></p>
+
+            <datalist id="currencies"></datalist>
         </div>
-        
-      <datalist id="currencies">
-        <!-- Populated dynamically by JS -->
-      </datalist>
 
-        <button id="swap-currencies">⇄</button>
-
-        <div class="amount-group">
-          <input list="currencies" id="to-currency" placeholder="To Currency">
-          <input type="text" id="converted-amount" readonly placeholder="Converted">
-        </div>
-      </div>
-
-      <p id="result"></p>
-      <p id="last-updated"></p>
-    </div>
-
-    <script src="{{ url_for('currency.static', filename='js/currencies.js') }}"></script>
-    <script src="{{ url_for('currency.static', filename='js/main.js') }}"></script>
-  </body>
+        <script src="{{ url_for('currency.static', filename='js/currencies.js') }}"></script>
+        <script src="{{ url_for('currency.static', filename='js/main.js') }}"></script>
+    </body>
 </html>

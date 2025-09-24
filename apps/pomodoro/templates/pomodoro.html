@@ -1,41 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Pomodoro Timer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('pomodoro.static', filename='css/styles.css') }}">
-</head>
-<body>
+<!doctype html>
+<html lang="en" class="transition-colors duration-500">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Pomodoro Timer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<section class="pomodoro-app">
-  <header>
-    <h1>🍅 Pomodoro Timer 🍅</h1>
-  </header>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/tailwind.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='images/favicon.ico') }}"
+            type="image/x-icon"
+        />
 
-  <form id="pomodoroForm">
-    <label>Cycles: <input type="number" id="cycles" value="4"></label>
-    <label>Work (min): <input type="number" id="pomodoro_length" value="25"></label>
-    <label>Break (min): <input type="number" id="break_time" value="5"></label>
-    <label>Long Break (min): <input type="number" id="long_break" value="15"></label>
-  </form>
+        <script>
+            (function () {
+                const html = document.documentElement;
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    html.classList.add("dark");
+                } else {
+                    html.classList.remove("dark");
+                }
+            })();
+        </script>
+    </head>
 
-  <div class="timer-display">
-    <div id="timerDisplay">00:00</div>
-    <div class="phase-indicator">Phase: <span id="currentPhase">Ready</span></div>
-    <div class="cycle-display">Cycle: <span id="currentCycle">0</span> / <span id="totalCycles">4</span></div>
-  </div>
+    <body
+        class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen p-6 transition-colors duration-500 font-sans"
+    >
+        <section
+            class="w-full max-w-md p-6 sm:p-8 rounded-2xl shadow-2xl bg-white dark:bg-gray-800 text-center space-y-6"
+        >
+            <header>
+                <h1
+                    class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-4 flex items-center justify-center gap-2"
+                >
+                    🍅 Pomodoro Timer 🍅
+                </h1>
+            </header>
 
-  <div class="timer-controls">
-    <button id="startPomodoro">Start</button>
-    <div class="small-controls">
-      <button id="pausePomodoro">Pause</button>
-      <button id="resetPomodoro">Reset</button>
-    </div>
-  </div>
-</section>
+            <form id="pomodoroForm" class="flex flex-col gap-4">
+                <label
+                    class="flex flex-col items-start text-sm text-gray-700 dark:text-gray-300"
+                >
+                    Cycles:
+                    <input
+                        type="number"
+                        id="cycles"
+                        value="4"
+                        class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                    />
+                </label>
 
-<script src="{{ url_for('pomodoro.static', filename='js/main.js') }}"></script>
-</body>
+                <label
+                    class="flex flex-col items-start text-sm text-gray-700 dark:text-gray-300"
+                >
+                    Work (min):
+                    <input
+                        type="number"
+                        id="pomodoro_length"
+                        value="25"
+                        class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                    />
+                </label>
+
+                <label
+                    class="flex flex-col items-start text-sm text-gray-700 dark:text-gray-300"
+                >
+                    Break (min):
+                    <input
+                        type="number"
+                        id="break_time"
+                        value="5"
+                        class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                    />
+                </label>
+
+                <label
+                    class="flex flex-col items-start text-sm text-gray-700 dark:text-gray-300"
+                >
+                    Long Break (min):
+                    <input
+                        type="number"
+                        id="long_break"
+                        value="15"
+                        class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                    />
+                </label>
+            </form>
+
+            <div class="space-y-3">
+                <div
+                    id="timerDisplay"
+                    class="text-4xl font-extrabold transition-all duration-200 text-gray-900 dark:text-gray-100"
+                >
+                    00:00
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-300">
+                    Phase: <span id="currentPhase">Ready</span>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-300">
+                    Cycle: <span id="currentCycle">0</span> /
+                    <span id="totalCycles">4</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button
+                    id="startPomodoro"
+                    class="w-full py-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium shadow-md transition transform hover:-translate-y-0.5"
+                >
+                    Start
+                </button>
+                <div class="flex gap-3">
+                    <button
+                        id="pausePomodoro"
+                        class="flex-1 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition"
+                    >
+                        Pause
+                    </button>
+                    <button
+                        id="resetPomodoro"
+                        class="flex-1 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition"
+                    >
+                        Reset
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <script src="{{ url_for('pomodoro.static', filename='js/main.js') }}"></script>
+    </body>
 </html>
