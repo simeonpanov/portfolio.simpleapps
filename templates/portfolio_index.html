@@ -125,20 +125,33 @@
         <script>
             const menuButton = document.getElementById("mobile-menu-button");
             const mobileMenu = document.getElementById("mobile-menu");
+            const body = document.body;
 
             if (menuButton && mobileMenu) {
                 menuButton.addEventListener("click", () => {
                     mobileMenu.classList.toggle("hidden");
+                    body.classList.toggle("mobile-menu-open");
                 });
 
-                // Close when clicking a link
                 mobileMenu.querySelectorAll("a").forEach((link) => {
                     link.addEventListener("click", () => {
                         mobileMenu.classList.add("hidden");
+                        body.classList.remove("mobile-menu-open");
                     });
                 });
             }
         </script>
+
+        <style>
+            body.mobile-menu-open {
+                padding-top: 64px;
+            }
+            @media (min-width: 768px) {
+                body.mobile-menu-open {
+                    padding-top: 0;
+                }
+            }
+        </style>
 
         <section
             class="min-h-screen flex flex-col justify-center items-center text-center px-4"
@@ -195,7 +208,7 @@
 
         <section
             id="about"
-            class="py-20 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md"
+            class="py-20 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md transition-colors duration-300"
         >
             <div class="max-w-4xl mx-auto px-6 text-center">
                 <img
@@ -221,7 +234,10 @@
             </div>
         </section>
 
-        <section id="approach" class="py-20 bg-gray-100 dark:bg-gray-900">
+        <section
+            id="approach"
+            class="py-20 bg-gray-100 dark:bg-gray-900 transition-colors duration-300"
+        >
             <div class="max-w-6xl mx-auto px-6 text-center">
                 <h2 class="text-4xl font-bold mb-12">My Approach</h2>
                 <div
@@ -306,7 +322,10 @@
             }
         </style>
 
-        <section id="skills" class="py-20 bg-gray-100 dark:bg-gray-800">
+        <section
+            id="skills"
+            class="py-20 bg-gray-100 dark:bg-gray-800 transition-colors duration-300"
+        >
             <div class="max-w-6xl mx-auto px-6 text-center">
                 <h2 class="text-4xl font-bold mb-8" id="skills-title">
                     Front-End
@@ -635,7 +654,7 @@
 
         <section
             id="projects"
-            class="min-h-screen flex flex-col items-center px-6 py-20"
+            class="min-h-screen flex flex-col items-center px-6 py-20 transition-colors duration-300"
         >
             <h2 class="text-4xl font-bold mb-12 text-center">Projects</h2>
             <div
@@ -714,7 +733,7 @@
                             >Demo</a
                         >
                         <a
-                            href="https://github.com/simeonpanov/portfolio.simpleapps/tree/main/apps/expensetracker"
+                            href="https://github.com/simeonpanov/portfolio.simpleapps/tree/main/apps/pomodoro"
                             target="_blank"
                             class="flex-1 text-center px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600"
                             >Source</a
@@ -740,7 +759,7 @@
                             >Demo</a
                         >
                         <a
-                            href="https://github.com/simeonpanov/expenses"
+                            href="https://github.com/simeonpanov/portfolio.simpleapps/tree/main/apps/expensetracker"
                             target="_blank"
                             class="flex-1 text-center px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600"
                             >Source</a
@@ -777,7 +796,7 @@
 
         <section
             id="contact"
-            class="py-16 w-full max-w-3xl mx-auto px-4 sm:px-6"
+            class="py-16 w-full max-w-3xl mx-auto px-4 sm:px-6 transition-colors duration-300"
         >
             <h2 class="text-3xl font-bold text-center mb-8">Contact Me</h2>
 
@@ -866,7 +885,9 @@
         <script>
             const contactForm = document.querySelector("#contact form");
             const successMessage = document.getElementById("success-message");
-
+            const submitButton = contactForm.querySelector(
+                "button[type='submit']",
+            );
             const fields = [
                 {
                     input: document.getElementById("name"),
@@ -884,7 +905,9 @@
 
             fields.forEach(({ input, error }) => {
                 input.addEventListener("input", () => {
-                    error.style.opacity = 0;
+                    if (error.style.opacity === "1") {
+                        error.style.opacity = "0";
+                    }
                 });
             });
 
@@ -892,24 +915,26 @@
                 e.preventDefault();
 
                 let valid = true;
-
                 fields.forEach(({ input, error }) => {
                     if (!input.value.trim()) {
                         error.textContent = `Please enter your ${input.name}.`;
-                        error.style.opacity = 1;
+                        error.style.opacity = "1";
                         valid = false;
                     } else if (
                         input.type === "email" &&
-                        !input.value.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+                        !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(input.value)
                     ) {
                         error.textContent =
                             "Please enter a valid email address.";
-                        error.style.opacity = 1;
+                        error.style.opacity = "1";
                         valid = false;
                     }
                 });
 
                 if (!valid) return;
+
+                submitButton.disabled = true;
+                submitButton.textContent = "Sending...";
 
                 const formData = new FormData(contactForm);
                 try {
@@ -920,7 +945,9 @@
                     });
 
                     if (response.ok) {
-                        successMessage.style.opacity = 1;
+                        successMessage.innerHTML =
+                            '<i class="fa-solid fa-check mr-2"></i>Thank you! I’ll get back to you soon.';
+                        successMessage.style.opacity = "1";
                         contactForm.reset();
                     } else {
                         alert("Oops! There was a problem submitting the form.");
@@ -929,6 +956,9 @@
                     alert(
                         "Oops! Something went wrong. Please try again later.",
                     );
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = "Send Message";
                 }
             });
         </script>
@@ -982,5 +1012,30 @@
             src="{{ url_for('static', filename='js/particles.js') }}"
             defer
         ></script>
+
+        <button
+            id="back-to-top"
+            class="fixed bottom-6 right-6 p-3 rounded-full bg-blue-500 text-white shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label="Back to top"
+        >
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+
+        <script>
+            const backToTop = document.getElementById("back-to-top");
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 600) {
+                    backToTop.classList.remove(
+                        "opacity-0",
+                        "pointer-events-none",
+                    );
+                } else {
+                    backToTop.classList.add("opacity-0", "pointer-events-none");
+                }
+            });
+            backToTop.addEventListener("click", () => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        </script>
     </body>
 </html>
