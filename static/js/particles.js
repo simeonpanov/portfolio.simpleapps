@@ -7,8 +7,8 @@ let height = window.innerHeight;
 canvas.width = width;
 canvas.height = height;
 
-const particleCount = 120;
-const maxDistance = 120;
+let particleCount = width < 640 ? 50 : 120;
+let maxDistance = width < 640 ? 60 : 120;
 let particles = [];
 
 for (let i = 0; i < particleCount; i++) {
@@ -33,6 +33,24 @@ function resizeCanvas() {
   height = window.innerHeight;
   canvas.width = width;
   canvas.height = height;
+
+  particleCount = width < 640 ? 50 : 120;
+  maxDistance = width < 640 ? 60 : 120;
+
+  if (particles.length > particleCount) {
+    particles = particles.slice(0, particleCount);
+  } else {
+    while (particles.length < particleCount) {
+      particles.push({
+        x: Math.random(),
+        y: Math.random(),
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 2 + 1,
+        alpha: Math.random() * 0.5 + 0.5,
+      });
+    }
+  }
 }
 
 window.addEventListener("resize", resizeCanvas);
