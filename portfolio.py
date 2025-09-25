@@ -13,29 +13,29 @@ from apps.expensetracker.app import expensetracker_bp
 app = Flask(__name__)
 
 
-app.secret_key = os.environ.get('FLASK_SECRET_KEY')
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
 
 
-FLASK_ENV = os.environ.get('FLASK_ENV', 'development')
-is_production = FLASK_ENV.lower() == 'production'
+FLASK_ENV = os.environ.get("FLASK_ENV", "development")
+is_production = FLASK_ENV.lower() == "production"
 
 
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Lax',
-    SESSION_COOKIE_SECURE=is_production  # Only secure in production
+    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=is_production,
 )
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('portfolio_index.html')
+    return render_template("portfolio_index.html")
 
 
-app.register_blueprint(todo_bp, url_prefix='/todo')
-app.register_blueprint(currency_bp, url_prefix='/currency')
-app.register_blueprint(pomodoro_bp, url_prefix='/pomodoro')
-app.register_blueprint(expensetracker_bp, url_prefix='/expenses')
+app.register_blueprint(todo_bp, url_prefix="/todo")
+app.register_blueprint(currency_bp, url_prefix="/currency")
+app.register_blueprint(pomodoro_bp, url_prefix="/pomodoro")
+app.register_blueprint(expensetracker_bp, url_prefix="/expenses")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=not is_production)

@@ -2,6 +2,7 @@
 <html lang="en" class="transition-colors duration-500">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Currency Converter</title>
         <link
             rel="stylesheet"
@@ -17,6 +18,18 @@
             href="{{ url_for('static', filename='images/favicon.ico') }}"
             type="image/x-icon"
         />
+
+        <style>
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            input[type="number"] {
+                -moz-appearance: textfield;
+            }
+        </style>
+
         <script>
             (function () {
                 const html = document.documentElement;
@@ -33,7 +46,7 @@
         class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen p-4 transition-colors duration-500"
     >
         <div
-            class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-6xl space-y-6 transition-colors duration-500"
+            class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-6xl space-y-6"
         >
             <h1
                 class="text-3xl sm:text-4xl font-bold text-center text-blue-600 dark:text-blue-400 mb-4"
@@ -41,61 +54,127 @@
                 Currency Converter
             </h1>
 
-            <!-- Horizontal Converter -->
-            <div class="flex flex-col sm:flex-row items-center gap-4">
-                <!-- From -->
+            <form
+                id="converter-form"
+                class="flex flex-col sm:flex-row items-center gap-4"
+            >
                 <div class="flex-1 flex gap-2 items-center">
+                    <label for="amount" class="sr-only">Amount</label>
                     <input
                         type="number"
                         id="amount"
                         placeholder="Amount"
-                        class="text-gray-900 dark:text-gray-100 flex-1 p-3 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
+                        min="0"
+                        step="any"
+                        class="text-gray-900 dark:text-gray-100 flex-[0.4] p-3 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
                     />
-                    <input
-                        list="currencies"
-                        id="from-currency"
-                        class="text-gray-900 dark:text-gray-100 p-3 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
-                        placeholder="USD – United States Dollar"
-                    />
+
+                    <div class="relative flex-[0.6]">
+                        <label for="from-currency-input" class="sr-only"
+                            >From currency</label
+                        >
+                        <input
+                            type="text"
+                            id="from-currency-input"
+                            class="text-gray-900 dark:text-gray-100 w-full p-3 pr-10 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
+                            placeholder="USD – United States Dollar"
+                            autocomplete="off"
+                        />
+                        <span
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none"
+                        >
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </span>
+                        <div
+                            id="from-currency-menu"
+                            class="hidden absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-auto"
+                        ></div>
+                    </div>
                 </div>
 
-                <!-- Swap -->
                 <button
                     id="swap-currencies"
+                    type="button"
+                    aria-label="Swap currencies"
                     class="p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition shadow-md"
                 >
-                    <i class="fa-solid fa-arrows-rotate text-lg"></i>
+                    <i
+                        class="fa-solid fa-arrows-rotate text-lg"
+                        aria-hidden="true"
+                    ></i>
                 </button>
 
-                <!-- To -->
                 <div class="flex-1 flex gap-2 items-center">
+                    <label for="converted-amount" class="sr-only"
+                        >Converted amount</label
+                    >
                     <input
                         type="text"
                         id="converted-amount"
                         readonly
-                        placeholder="Converted"
-                        class="text-gray-900 dark:text-gray-100 flex-1 p-3 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
+                        placeholder="0.000000"
+                        class="text-gray-900 dark:text-gray-100 flex-[0.4] p-3 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition font-mono"
                     />
-                    <input
-                        list="currencies"
-                        id="to-currency"
-                        class="text-gray-900 dark:text-gray-100 p-3 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
-                        placeholder="EUR – Euro"
-                    />
+                    <div class="relative flex-[0.6]">
+                        <label for="to-currency-input" class="sr-only"
+                            >To currency</label
+                        >
+                        <input
+                            type="text"
+                            id="to-currency-input"
+                            class="text-gray-900 dark:text-gray-100 w-full p-3 pr-10 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 transition"
+                            placeholder="EUR – Euro"
+                            autocomplete="off"
+                        />
+                        <span
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none"
+                        >
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </span>
+                        <div
+                            id="to-currency-menu"
+                            class="hidden absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-auto"
+                        ></div>
+                    </div>
                 </div>
-            </div>
+            </form>
 
-            <p id="result" class="hidden"></p>
+            <p
+                id="precision-hint"
+                class="text-center text-xs text-gray-500 dark:text-gray-400 italic hidden"
+            >
+                Values smaller than 0.000001 may appear as 0
+            </p>
+
+            <p id="result" class="hidden" aria-live="polite"></p>
 
             <p
                 id="last-updated"
                 class="text-center text-gray-500 dark:text-gray-400 text-sm"
+                aria-live="polite"
             ></p>
 
-            <datalist id="currencies"></datalist>
+            <div
+                id="currency-chart"
+                class="pt-6 border-t border-gray-200 dark:border-gray-700"
+            >
+                <h3
+                    class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3"
+                >
+                    Compared to 1 USD
+                </h3>
+                <div id="chart-bars" class="space-y-2"></div>
+                <p class="text-xs text-gray-400 mt-2">*Rates updated daily</p>
+            </div>
         </div>
 
-        <script src="{{ url_for('currency.static', filename='js/currencies.js') }}"></script>
-        <script src="{{ url_for('currency.static', filename='js/main.js') }}"></script>
+        <script
+            defer
+            src="{{ url_for('currency.static', filename='js/currencies.js') }}"
+        ></script>
+        <script
+            defer
+            src="{{ url_for('currency.static', filename='js/main.js') }}"
+        ></script>
     </body>
 </html>
