@@ -19,6 +19,9 @@
             type="image/x-icon"
         />
 
+        <!-- Confetti -->
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
         <script>
             (function () {
                 const html = document.documentElement;
@@ -48,50 +51,62 @@
 
             <form id="pomodoroForm" class="flex flex-col gap-4">
                 <label
+                    for="cycles"
                     class="flex flex-col items-start text-sm text-gray-700 dark:text-gray-300"
                 >
                     Cycles:
                     <input
                         type="number"
                         id="cycles"
+                        min="1"
                         value="4"
                         class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                        aria-label="Number of cycles"
                     />
                 </label>
 
                 <label
+                    for="pomodoro_length"
                     class="flex flex-col items-start text-sm text-gray-700 dark:text-gray-300"
                 >
                     Work (min):
                     <input
                         type="number"
                         id="pomodoro_length"
+                        min="1"
                         value="25"
                         class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                        aria-label="Work duration in minutes"
                     />
                 </label>
 
                 <label
+                    for="break_time"
                     class="flex flex-col items-start text-sm text-gray-700 dark:text-gray-300"
                 >
                     Break (min):
                     <input
                         type="number"
                         id="break_time"
+                        min="1"
                         value="5"
                         class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                        aria-label="Short break duration in minutes"
                     />
                 </label>
 
                 <label
+                    for="long_break"
                     class="flex flex-col items-start text-sm text-gray-700 dark:text-gray-300"
                 >
                     Long Break (min):
                     <input
                         type="number"
                         id="long_break"
+                        min="1"
                         value="15"
                         class="mt-1 w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                        aria-label="Long break duration in minutes"
                     />
                 </label>
             </form>
@@ -99,12 +114,13 @@
             <div class="space-y-3">
                 <div
                     id="timerDisplay"
-                    class="text-4xl font-extrabold transition-all duration-200 text-gray-900 dark:text-gray-100"
+                    class="text-4xl font-extrabold transition-all duration-300 text-gray-900 dark:text-gray-100"
                 >
-                    00:00
+                    25:00
                 </div>
                 <div class="text-sm text-gray-600 dark:text-gray-300">
-                    Phase: <span id="currentPhase">Ready</span>
+                    Phase:
+                    <span id="currentPhase" class="font-medium">Work</span>
                 </div>
                 <div class="text-sm text-gray-600 dark:text-gray-300">
                     Cycle: <span id="currentCycle">0</span> /
@@ -115,24 +131,34 @@
             <div class="flex flex-col gap-3">
                 <button
                     id="startPomodoro"
-                    class="w-full py-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium shadow-md transition transform hover:-translate-y-0.5"
+                    class="w-full py-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium shadow-md transition transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    aria-label="Start timer"
                 >
                     Start
                 </button>
                 <div class="flex gap-3">
                     <button
                         id="pausePomodoro"
-                        class="flex-1 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition"
+                        class="flex-1 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        aria-label="Pause timer"
                     >
                         Pause
                     </button>
                     <button
                         id="resetPomodoro"
-                        class="flex-1 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition"
+                        class="flex-1 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition focus:outline-none focus:ring-2 focus:ring-red-400"
+                        aria-label="Reset timer"
                     >
                         Reset
                     </button>
                 </div>
+                <button
+                    id="soundToggle"
+                    class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 flex items-center justify-center gap-1"
+                    aria-label="Toggle sound"
+                >
+                    <i class="fa-solid fa-volume-high"></i> Sound On
+                </button>
             </div>
         </section>
 

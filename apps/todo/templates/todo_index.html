@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Todo App</title>
 
         <link
@@ -11,11 +12,7 @@
 
         <link
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css"
+            href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css"
         />
 
         <link
@@ -23,12 +20,76 @@
             href="{{ url_for('static', filename='images/favicon.ico') }}"
             type="image/x-icon"
         />
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
         <script
             src="{{ url_for('todo.static', filename='js/main.js') }}"
             defer
         ></script>
+
+        <style>
+            html.dark .flatpickr-calendar {
+                background: #1f2937; /* gray-800 */
+                border-color: #374151; /* gray-700 */
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            }
+
+            html.dark .flatpickr-day,
+            html.dark .flatpickr-weekday,
+            html.dark .flatpickr-months .flatpickr-month,
+            html.dark .flatpickr-current-month .cur-month,
+            html.dark .flatpickr-current-month .cur-year,
+            html.dark .numInput.cur-year {
+                color: #f9fafb; /* gray-50 */
+            }
+
+            html.dark .flatpickr-weekday {
+                background: #111827; /* gray-900 */
+                font-weight: 600;
+            }
+
+            html.dark .flatpickr-day:hover,
+            html.dark .flatpickr-day:focus {
+                background: #374151; /* gray-700 */
+                color: #f9fafb;
+                border-color: #374151;
+            }
+
+            html.dark .flatpickr-day.selected,
+            html.dark .flatpickr-day.selected:hover,
+            html.dark .flatpickr-day.selected:focus {
+                background: #3b82f6; /* blue-500 */
+                color: white;
+                border-color: #3b82f6;
+            }
+
+            html.dark .flatpickr-months .flatpickr-prev-month,
+            html.dark .flatpickr-months .flatpickr-next-month {
+                color: #f9fafb;
+            }
+            html.dark .flatpickr-months .flatpickr-prev-month:hover,
+            html.dark .flatpickr-months .flatpickr-next-month:hover {
+                background: #374151;
+                color: #f9fafb;
+            }
+
+            /* Time picker (if enabled) */
+            html.dark .flatpickr-time input,
+            html.dark .flatpickr-time .numInput {
+                color: #f9fafb;
+                background: transparent;
+            }
+            html.dark .flatpickr-time input:hover,
+            html.dark .flatpickr-time .numInput:hover {
+                background: #374151;
+            }
+            html.dark .flatpickr-time .flatpickr-am-pm:hover {
+                background: #374151;
+            }
+        </style>
 
         <script>
             (function () {
@@ -60,6 +121,8 @@
                     id="note"
                     placeholder="Task note"
                     required
+                    autocomplete="off"
+                    aria-label="Task note"
                     class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 />
                 <input
@@ -67,11 +130,14 @@
                     id="duedate"
                     placeholder="Select due date & time"
                     required
+                    autocomplete="off"
+                    aria-label="Due date and time"
                     class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 />
                 <select
                     id="priority"
                     required
+                    aria-label="Task priority"
                     class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 >
                     <option value="">Priority</option>
@@ -82,6 +148,7 @@
                 <select
                     id="category"
                     required
+                    aria-label="Task category"
                     class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 >
                     <option value="">Category</option>
@@ -93,7 +160,7 @@
                 <div class="sm:col-span-2">
                     <button
                         type="submit"
-                        class="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-md transition"
+                        class="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold shadow-md transition transform hover:scale-[1.02] active:scale-[0.98]"
                     >
                         Add Task
                     </button>
@@ -107,10 +174,12 @@
                     type="text"
                     id="search"
                     placeholder="Search tasks..."
+                    aria-label="Search tasks"
                     class="flex-1 p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 />
                 <select
                     id="sort"
+                    aria-label="Sort tasks"
                     class="p-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 >
                     <option value="">Sort By</option>
@@ -121,9 +190,9 @@
                 </select>
             </div>
 
-            <div id="tasks" class="space-y-4">
+            <ul id="tasks" class="space-y-4">
                 <!-- Tasks will be dynamically rendered here by JS -->
-            </div>
+            </ul>
         </div>
     </body>
 </html>

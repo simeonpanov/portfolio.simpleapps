@@ -12,27 +12,117 @@
             rel="stylesheet"
             href="{{ url_for('static', filename='css/tailwind.css') }}"
         />
-
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
         <link
             rel="icon"
             href="{{ url_for('static', filename='images/favicon.ico') }}"
             type="image/x-icon"
         />
-        <script
-            src="https://kit.fontawesome.com/your-fa-key.js"
-            crossorigin="anonymous"
-        ></script>
+
+        <style>
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            input[type="number"] {
+                -moz-appearance: textfield;
+            }
+        </style>
+
+        <style>
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            input[type="number"] {
+                -moz-appearance: textfield;
+            }
+
+            input[type="date"] {
+                background-color: #ffffff;
+                color: #111827;
+                border-color: #d1d5db; /* gray-300 */
+            }
+
+            html.dark input[type="date"] {
+                background-color: #111827 !important;
+                color: #f9fafb !important;
+                border-color: #374151 !important; /* gray-700 */
+            }
+
+            html:not(.dark)
+                input[type="date"]::-webkit-calendar-picker-indicator {
+                filter: none;
+            }
+            html.dark input[type="date"]::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+            }
+        </style>
+
+        <script>
+            (function () {
+                const html = document.documentElement;
+                const savedTheme = localStorage.getItem("theme");
+                if (savedTheme === "dark") {
+                    html.classList.add("dark");
+                } else {
+                    html.classList.remove("dark");
+                }
+            })();
+        </script>
     </head>
-    <body class="bg-gray-900 text-gray-200 font-inter">
+    <body
+        class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-inter transition-colors duration-300"
+    >
         <div class="max-w-6xl mx-auto px-4 py-10">
             <header class="mb-10 text-center">
-                <h1 class="text-4xl font-bold text-blue-500">
-                    Expense Tracker
+                <h1
+                    class="text-4xl font-bold text-blue-500 flex items-center justify-center gap-2"
+                >
+                    <i class="fa-solid fa-wallet"></i> Expense Tracker
                 </h1>
             </header>
 
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center"
+                >
+                    <p class="text-sm text-gray-400">Total Expenses</p>
+                    <p
+                        id="total-expenses"
+                        class="text-2xl font-bold text-red-400"
+                    >
+                        $0.00
+                    </p>
+                </div>
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center"
+                >
+                    <p class="text-sm text-gray-400">Number of Items</p>
+                    <p id="item-count" class="text-2xl font-bold text-blue-400">
+                        0
+                    </p>
+                </div>
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 text-center"
+                >
+                    <p class="text-sm text-gray-400">Avg. per Item</p>
+                    <p
+                        id="avg-amount"
+                        class="text-2xl font-bold text-green-400"
+                    >
+                        $0.00
+                    </p>
+                </div>
+            </div>
+
             <div class="grid md:grid-cols-2 gap-6 mb-10">
-                <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                     <h2
                         class="text-xl font-semibold text-blue-400 mb-4 text-center"
                     >
@@ -42,42 +132,46 @@
                         <input
                             type="text"
                             id="item"
-                            placeholder="Item"
+                            placeholder="Item (e.g., Groceries)"
                             required
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                            class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                            aria-label="Expense item"
                         />
                         <input
                             type="number"
                             id="amount"
                             placeholder="Amount"
                             step="0.01"
-                            min="0"
+                            min="0.01"
                             required
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                            class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                            aria-label="Expense amount"
                         />
                         <input
                             type="text"
                             id="category"
-                            placeholder="Category"
+                            placeholder="Category (e.g., Food, Transport)"
                             required
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                            class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                            aria-label="Expense category"
                         />
                         <input
                             type="date"
                             id="date"
                             required
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                            class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                            aria-label="Expense date"
                         />
                         <button
                             type="submit"
-                            class="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 mt-2 font-medium transition"
+                            class="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 mt-2 font-medium transition transform hover:scale-[1.02] active:scale-[0.98]"
                         >
-                            Add Expense
+                            <i class="fa-solid fa-plus mr-2"></i> Add Expense
                         </button>
                     </form>
                 </div>
 
-                <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                     <h2
                         class="text-xl font-semibold text-blue-400 mb-4 text-center"
                     >
@@ -88,74 +182,107 @@
                             type="text"
                             id="filter-category"
                             placeholder="Category"
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                            class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                            aria-label="Filter by category"
                         />
-                        <input
-                            type="date"
-                            id="start-date"
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
-                        />
-                        <input
-                            type="date"
-                            id="end-date"
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
-                        />
-                        <input
-                            type="number"
-                            id="min-amount"
-                            placeholder="Min Amount"
-                            step="0.01"
-                            min="0"
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
-                        />
-                        <input
-                            type="number"
-                            id="max-amount"
-                            placeholder="Max Amount"
-                            step="0.01"
-                            min="0"
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
-                        />
-                        <select
-                            id="sort"
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
-                        >
-                            <option value="">Sort By</option>
-                            <option value="date">Date</option>
-                            <option value="amount">Amount</option>
-                            <option value="category">Category</option>
-                        </select>
-                        <select
-                            id="order"
-                            class="px-3 py-2 rounded-md bg-gray-900 border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
-                        >
-                            <option value="asc">Ascending</option>
-                            <option value="desc">Descending</option>
-                        </select>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input
+                                type="date"
+                                id="start-date"
+                                class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                                aria-label="Start date"
+                            />
+                            <input
+                                type="date"
+                                id="end-date"
+                                class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                                aria-label="End date"
+                            />
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input
+                                type="number"
+                                id="min-amount"
+                                placeholder="Min"
+                                step="0.01"
+                                min="0"
+                                class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                                aria-label="Minimum amount"
+                            />
+                            <input
+                                type="number"
+                                id="max-amount"
+                                placeholder="Max"
+                                step="0.01"
+                                min="0"
+                                class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                                aria-label="Maximum amount"
+                            />
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select
+                                id="sort"
+                                class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                                aria-label="Sort by"
+                            >
+                                <option value="">Sort By</option>
+                                <option value="date">Date</option>
+                                <option value="amount">Amount</option>
+                                <option value="category">Category</option>
+                            </select>
+                            <select
+                                id="order"
+                                class="px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none transition"
+                                aria-label="Sort order"
+                            >
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
                         <button
                             type="submit"
-                            class="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 mt-2 font-medium transition"
+                            class="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 font-medium transition"
                         >
-                            Apply
+                            <i class="fa-solid fa-filter mr-2"></i> Apply
+                        </button>
+                        <button
+                            type="button"
+                            id="reset-filters"
+                            class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-md py-2 font-medium transition"
+                        >
+                            Reset Filters
                         </button>
                     </form>
                 </div>
             </div>
 
-            <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
                 <h2
                     class="text-xl font-semibold text-blue-400 mb-4 text-center"
                 >
                     Expenses
                 </h2>
+                <div id="expenses-loading" class="text-center py-4 hidden">
+                    <i
+                        class="fa-solid fa-spinner animate-spin text-blue-500 mr-2"
+                    ></i>
+                    Loading...
+                </div>
+                <div id="expenses-empty" class="text-center py-8 hidden">
+                    <i
+                        class="fa-solid fa-receipt text-gray-500 text-3xl mb-2"
+                    ></i>
+                    <p class="text-gray-400">No expenses yet. Add one above!</p>
+                </div>
                 <div class="overflow-x-auto">
                     <table
-                        class="w-full text-left text-sm border-collapse"
+                        class="w-full text-left text-sm border-collapse min-w-full"
                         id="expenses-table"
                     >
-                        <thead class="bg-gray-700 text-blue-400">
+                        <thead
+                            class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-blue-400"
+                        >
                             <tr>
-                                <th class="px-4 py-2">ID</th>
                                 <th class="px-4 py-2">Item</th>
                                 <th class="px-4 py-2">Amount</th>
                                 <th class="px-4 py-2">Category</th>
@@ -163,12 +290,107 @@
                                 <th class="px-4 py-2">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-700"></tbody>
+                        <tbody
+                            class="divide-y divide-gray-200 dark:divide-gray-700"
+                        ></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
+        <div
+            id="edit-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+        >
+            <div
+                class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md"
+            >
+                <h3 class="text-xl font-semibold text-blue-400 mb-4">
+                    Edit Expense
+                </h3>
+                <form id="edit-form" class="space-y-3">
+                    <input type="hidden" id="edit-id" />
+                    <input
+                        type="text"
+                        id="edit-item"
+                        placeholder="Item"
+                        required
+                        class="w-full px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                    />
+                    <input
+                        type="number"
+                        id="edit-amount"
+                        placeholder="Amount"
+                        step="0.01"
+                        min="0.01"
+                        required
+                        class="w-full px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                    />
+                    <input
+                        type="text"
+                        id="edit-category"
+                        placeholder="Category"
+                        required
+                        class="w-full px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                    />
+                    <input
+                        type="date"
+                        id="edit-date"
+                        required
+                        class="w-full px-3 py-2 rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 outline-none"
+                    />
+                    <div class="flex gap-2">
+                        <button
+                            type="submit"
+                            class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md"
+                        >
+                            Save
+                        </button>
+                        <button
+                            type="button"
+                            id="cancel-edit"
+                            class="flex-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white py-2 rounded-md"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <script src="{{ url_for('expensetracker.static', filename='js/main.js') }}"></script>
+
+        <div
+            id="delete-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+        >
+            <div
+                class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md text-center"
+            >
+                <i
+                    class="fa-solid fa-triangle-exclamation text-yellow-400 text-3xl mb-4"
+                ></i>
+                <h3 class="text-xl font-semibold text-gray-200 mb-2">
+                    Confirm Deletion
+                </h3>
+                <p class="text-gray-400 mb-6">
+                    Are you sure you want to delete this expense?
+                </p>
+                <div class="flex gap-3 justify-center">
+                    <button
+                        id="confirm-delete"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium transition"
+                    >
+                        Delete
+                    </button>
+                    <button
+                        id="cancel-delete"
+                        class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-md font-medium transition"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
