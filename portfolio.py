@@ -9,7 +9,7 @@ from apps.todo.app import todo_bp
 from apps.currency.app import currency_bp
 from apps.pomodoro.app import pomodoro_bp
 from apps.expensetracker.app import expensetracker_bp
-from apps.weather.app import weather_bp
+# from apps.weather.app import weather_bp
 
 app = Flask(__name__)
 
@@ -37,7 +37,7 @@ app.register_blueprint(todo_bp, url_prefix="/todo")
 app.register_blueprint(currency_bp, url_prefix="/currency")
 app.register_blueprint(pomodoro_bp, url_prefix="/pomodoro")
 app.register_blueprint(expensetracker_bp, url_prefix="/expenses")
-app.register_blueprint(weather_bp, url_prefix="/weather")
+# app.register_blueprint(weather_bp, url_prefix="/weather")
 
 if __name__ == "__main__":
     app.run(debug=not is_production)
