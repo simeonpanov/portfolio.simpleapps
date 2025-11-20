@@ -220,9 +220,8 @@
                 <p class="text-lg leading-relaxed mb-6">
                     I’m a QA Analyst with experience in manual and automated
                     testing, currently transitioning into software development.
-                    I’m building full-stack applications to grow my development
-                    skills and contribute to creating reliable, user-friendly
-                    software.
+                    I’m building web applications to grow my development skills
+                    and contribute to creating reliable, user-friendly software.
                 </p>
                 <a
                     href="/static/images/Simeon_Panov.pdf"
@@ -911,34 +910,6 @@
         </section>
 
         <script>
-            const contactForm = document.querySelector("#contact form");
-            const successMessage = document.getElementById("success-message");
-            const submitButton = contactForm.querySelector(
-                "button[type='submit']",
-            );
-            const fields = [
-                {
-                    input: document.getElementById("name"),
-                    error: document.getElementById("name-error"),
-                },
-                {
-                    input: document.getElementById("email"),
-                    error: document.getElementById("email-error"),
-                },
-                {
-                    input: document.getElementById("message"),
-                    error: document.getElementById("message-error"),
-                },
-            ];
-
-            fields.forEach(({ input, error }) => {
-                input.addEventListener("input", () => {
-                    if (error.style.opacity === "1") {
-                        error.style.opacity = "0";
-                    }
-                });
-            });
-
             contactForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
 
@@ -964,12 +935,20 @@
                 submitButton.disabled = true;
                 submitButton.textContent = "Sending...";
 
-                const formData = new FormData(contactForm);
+                const payload = {
+                    name: contactForm.name.value,
+                    email: contactForm.email.value,
+                    message: contactForm.message.value,
+                };
+
                 try {
                     const response = await fetch(contactForm.action, {
                         method: "POST",
-                        body: formData,
-                        headers: { Accept: "application/json" },
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                        body: JSON.stringify(payload),
                     });
 
                     if (response.ok) {
@@ -978,9 +957,14 @@
                         successMessage.style.opacity = "1";
                         contactForm.reset();
                     } else {
-                        alert("Oops! There was a problem submitting the form.");
+                        const data = await response.json();
+                        console.error("Formspree error:", data);
+                        alert(
+                            "Oops! There was a problem submitting the form. Check console for details.",
+                        );
                     }
                 } catch (err) {
+                    console.error(err);
                     alert(
                         "Oops! Something went wrong. Please try again later.",
                     );
